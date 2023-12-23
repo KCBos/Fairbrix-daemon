@@ -48,7 +48,7 @@ uint64 nLocalServices = (fClient ? 0 : NODE_NETWORK);
 CAddress addrLocalHost("0.0.0.0", 0, false, nLocalServices);
 CNode* pnodeLocalHost = NULL;
 uint64 nLocalHostNonce = 0;
-array<int, 10> vnThreadsRunning;
+boost::array<int, 10> vnThreadsRunning
 SOCKET hListenSocket = INVALID_SOCKET;
 
 vector<CNode*> vNodes;
@@ -1073,7 +1073,8 @@ void ThreadMapPort2(void* parg)
     struct UPNPDev * devlist = 0;
     char lanaddr[64];
 
-    devlist = upnpDiscover(2000, multicastif, minissdpdpath, 0);
+    int error = 0;
+    devlist = upnpDiscover(2000, multicastif, minissdpdpath, 0, 0, 2, &error);
 
     struct UPNPUrls urls;
     struct IGDdatas data;
@@ -1085,13 +1086,7 @@ void ThreadMapPort2(void* parg)
         char intClient[16];
         char intPort[6];
 
-#ifndef __WXMSW__
-        r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,
-	                        port, port, lanaddr, 0, "TCP", 0);
-#else
-        r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype,
-	                        port, port, lanaddr, 0, "TCP", 0, "0");
-#endif
+        r = UPNP_AddPortMapping(urls.controlURL, data.first.servicetype, port, port, lanaddr, "", "TCP", 0, "0");
         if(r!=UPNPCOMMAND_SUCCESS)
             printf("AddPortMapping(%s, %s, %s) failed with code %d (%s)\n",
                 port, port, lanaddr, r, strupnperror(r));
