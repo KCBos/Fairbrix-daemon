@@ -1589,6 +1589,7 @@ pair<string, rpcfn_type> pCallTable[] =
     make_pair("listreceivedbylabel",   &listreceivedbyaccount), // deprecated
     make_pair("backupwallet",          &backupwallet),
     make_pair("validateaddress",       &validateaddress),
+    make_pair("getblockhash",          &getblockhash),
     make_pair("getbalance",            &getbalance),
     make_pair("move",                  &movecmd),
     make_pair("sendfrom",              &sendfrom),
@@ -1623,6 +1624,7 @@ string pAllowInSafeMode[] =
     "backupwallet",
     "validateaddress",
     "getwork",
+    "getblockhash",
 };
 set<string> setAllowInSafeMode(pAllowInSafeMode, pAllowInSafeMode + sizeof(pAllowInSafeMode)/sizeof(pAllowInSafeMode[0]));
 
